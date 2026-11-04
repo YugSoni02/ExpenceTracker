@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<header class="site-header" th:fragment="siteHeader(activePage)">
+		<div class="header-inner">
+			<a class="brand" th:href="@{/expenses}" aria-label="Verdant home">
+				<span class="brand-mark" aria-hidden="true">
+					<svg viewBox="0 0 32 32" fill="none">
+						<path d="M25.8 5.2C15.1 5.3 7.3 8.6 7.3 17.4c0 4.1 2.8 7 6.7 7 8.8 0 11.9-8.3 11.8-19.2Z" fill="currentColor" opacity=".22"/>
+						<path d="M8 25c2.8-5.8 7.2-10.2 13.5-13.8M10.7 19.7l-4.1-3.1m9.2-3.7 3.6 3.1" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+						<path d="M25.8 5.2C15.1 5.3 7.3 8.6 7.3 17.4c0 4.1 2.8 7 6.7 7 8.8 0 11.9-8.3 11.8-19.2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+					</svg>
+				</span>
+				<span class="brand-copy"><strong>verdant</strong><small>mindful money</small></span>
+			</a>
+
+			<nav class="main-nav" aria-label="Main navigation">
+				<a th:href="@{/expenses}" th:classappend="${activePage == 'Dashboard'} ? 'active' : ''">Overview</a>
+				<a th:href="@{/expenses/new}" th:classappend="${activePage == 'Add an expense'} ? 'active' : ''">Add expense</a>
+			</nav>
+
+			<form class="logout-form" th:action="@{/logout}" method="post">
+				<button class="avatar-button" type="submit" aria-label="Sign out" title="Sign out">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path d="M20 20a8 8 0 0 0-16 0M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+					</svg>
+				</button>
+			</form>
+		</div>
+	</header>
+
+	<footer class="site-footer" th:fragment="siteFooter">
+		<div class="footer-inner">
+			<div class="footer-brand"><span class="footer-dot"></span><span>Made for a more intentional relationship with money.</span></div>
+			<div class="footer-meta">
+				<span class="health-indicator" data-health-indicator>
+					<span class="health-dot"></span><span data-health-label>Checking system</span>
+				</span>
+				<span class="footer-divider" aria-hidden="true"></span>
+				<span>© <span data-current-year></span> Verdant</span>
+			</div>
+		</div>
+		<script th:src="@{/js/app.js}" defer></script>
+	</footer>
+</body>
+</html>

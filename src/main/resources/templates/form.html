@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f5f8f5">
+	<title th:text="${formTitle + ' · Verdant'}">Expense · Verdant</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+	<div class="app-shell">
+		<div th:replace="~{fragments/layout :: siteHeader(${formTitle})}"></div>
+		<main class="page-container form-page">
+			<a class="back-link" th:href="@{/expenses}">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				<span>Back to overview</span>
+			</a>
+
+			<section class="form-layout page-enter">
+				<div class="form-intro">
+					<p class="eyebrow"><span class="eyebrow-line"></span> MAKE IT COUNT</p>
+					<h1 th:text="${formTitle}">Add an expense</h1>
+					<p>A few details are all it takes to bring your spending into focus.</p>
+					<div class="form-note">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5M12 7v5l3 2m4.5-9.5V9m0-4.5H15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Your entries stay private to your account.</span>
+					</div>
+				</div>
+				<form class="expense-form panel" th:action="${formAction}" th:object="${expense}" method="post" novalidate>
+					<div class="form-card-heading"><span class="form-step">01</span><span>Expense details</span></div>
+					<div class="field-group">
+						<label for="title">What was it for?</label>
+						<input id="title" type="text" th:field="*{title}" maxlength="120" placeholder="e.g. Sunday farmers market" autocomplete="off" required autofocus>
+						<p class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Please enter a title.</p>
+					</div>
+					<div class="field-row">
+						<div class="field-group">
+							<label for="amount">Amount</label>
+							<div class="input-with-prefix"><span class="input-prefix">$</span><input id="amount" type="text" inputmode="decimal" th:field="*{amount}" placeholder="0.00" data-money-input required aria-describedby="amount-hint"><span class="input-suffix">USD</span></div>
+							<p class="field-hint" id="amount-hint">Enter an amount of at least $0.01.</p>
+							<p class="field-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Please enter a valid amount.</p>
+						</div>
+						<div class="field-group">
+							<label for="date">Date</label>
+							<div class="input-with-icon">
+								<input id="date" type="date" th:field="*{date}" required>
+								<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3v3m10-3v3M4.5 9h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 6 5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+							</div>
+							<p class="field-error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Please select a date.</p>
+						</div>
+					</div>
+					<div class="field-group">
+						<label for="category">Category</label>
+						<div class="select-wrap">
+							<input id="category" type="text" th:field="*{category}" list="category-suggestions" maxlength="60" placeholder="Choose or create a category" autocomplete="off" required>
+							<datalist id="category-suggestions"><option th:each="category : ${suggestedCategories}" th:value="${category}"></option></datalist>
+							<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</div>
+						<p class="field-error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Please enter a category.</p>
+					</div>
+					<div class="form-actions">
+						<a class="button button-secondary" th:href="@{/expenses}">Cancel</a>
+						<button class="button button-primary" type="submit">
+							<span th:text="${formTitle == 'Edit expense'} ? 'Save changes' : 'Save expense'">Save expense</span>
+							<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</button>
+					</div>
+					<p class="form-validation-message" data-form-message aria-live="polite"></p>
+				</form>
+			</section>
+		</main>
+		<div th:replace="~{fragments/layout :: siteFooter}"></div>
+	</div>
+</body>
+</html>

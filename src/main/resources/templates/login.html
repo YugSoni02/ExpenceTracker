@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f5f8f5">
+	<title>Sign in · Verdant</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+	<div class="app-shell">
+		<main class="login-page page-enter">
+			<a class="brand login-brand" th:href="@{/login}" aria-label="Verdant">
+				<span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M25.8 5.2C15.1 5.3 7.3 8.6 7.3 17.4c0 4.1 2.8 7 6.7 7 8.8 0 11.9-8.3 11.8-19.2Z" fill="currentColor" opacity=".22"/><path d="M8 25c2.8-5.8 7.2-10.2 13.5-13.8M10.7 19.7l-4.1-3.1m9.2-3.7 3.6 3.1" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M25.8 5.2C15.1 5.3 7.3 8.6 7.3 17.4c0 4.1 2.8 7 6.7 7 8.8 0 11.9-8.3 11.8-19.2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+				<span class="brand-copy"><strong>verdant</strong><small>mindful money</small></span>
+			</a>
+			<section class="login-card panel">
+				<div class="login-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v5c0 4.5 3 8.4 7 10 4-1.6 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+				<p class="eyebrow">A MOMENT OF CLARITY</p>
+				<h1>Welcome back.</h1>
+				<p class="login-copy">Sign in to pick up where you left off.</p>
+				<div class="login-alert" role="alert" th:if="${param.error}">That username or password didn't match. Please try again.</div>
+				<div class="login-success" role="status" th:if="${param.logout}">You’re signed out. See you next time.</div>
+				<form th:action="@{/login}" method="post" class="login-form">
+					<div class="field-group"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" placeholder="Your username" required autofocus></div>
+					<div class="field-group"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required></div>
+					<button class="button button-primary login-submit" type="submit"><span>Sign in</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+				</form>
+				<p class="login-security"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 5v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Your financial notes are yours alone.</p>
+			</section>
+		</main>
+		<div th:replace="~{fragments/layout :: siteFooter}"></div>
+	</div>
+</body>
+</html>

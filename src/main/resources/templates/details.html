@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f5f8f5">
+	<title th:text="${expense.title + ' · Verdant'}">Expense · Verdant</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+	<div class="app-shell">
+		<div th:replace="~{fragments/layout :: siteHeader('Expense details')}"></div>
+		<main class="page-container detail-page">
+			<a class="back-link" th:href="@{/expenses}">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				<span>Back to overview</span>
+			</a>
+			<section class="detail-wrap page-enter">
+				<div class="detail-topline"><span class="detail-kicker">EXPENSE DETAILS</span><span class="detail-id" th:text="'ENTRY #' + ${expense.id}">ENTRY #1</span></div>
+				<div class="detail-hero">
+					<span class="detail-icon" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1.2 11H6.2L5 8Zm3 0a4 4 0 0 1 8 0M9 12v3m6-3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</span>
+					<div><p class="detail-category" th:text="${expense.category}">Category</p><h1 th:text="${expense.title}">Expense title</h1></div>
+				</div>
+				<div class="detail-amount"><span>Amount spent</span><strong>$<span th:text="${#numbers.formatDecimal(expense.amount, 1, 'COMMA', 2, 'POINT')}">0.00</span></strong></div>
+				<div class="detail-meta">
+					<div class="detail-meta-item">
+						<span class="meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3v3m10-3v3M4.5 9h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 18 20H6a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 6 5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+						<span><small>DATE</small><strong th:text="${#temporals.format(expense.date, 'EEEE, MMMM d, yyyy')}">Monday, January 1, 2025</strong></span>
+					</div>
+					<div class="detail-meta-item">
+						<span class="meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11l9 9-7 7-9-9V5.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.1" fill="currentColor"/></svg></span>
+						<span><small>CATEGORY</small><strong th:text="${expense.category}">Category</strong></span>
+					</div>
+				</div>
+				<div class="detail-actions">
+					<a class="button button-secondary" th:href="@{/expenses/{id}/edit(id=${expense.id})}">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L19 8.4a2.1 2.1 0 0 0-3-3L5.2 16.2 4 20Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Edit entry</span>
+					</a>
+					<form th:action="@{/expenses/{id}/delete(id=${expense.id})}" method="post" data-confirm="Delete this expense? This action cannot be undone.">
+						<button class="button button-danger" type="submit">
+							<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16m-10 4v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+							<span>Delete</span>
+						</button>
+					</form>
+				</div>
+			</section>
+			<a class="back-link detail-bottom-link" th:href="@{/expenses}">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				<span>Back to overview</span>
+			</a>
+		</main>
+		<div th:replace="~{fragments/layout :: siteFooter}"></div>
+	</div>
+</body>
+</html>

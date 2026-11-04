@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f5f8f5">
+	<title>Overview · Verdant</title>
+	<link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+	<div class="app-shell">
+		<div th:replace="~{fragments/layout :: siteHeader('Dashboard')}"></div>
+		<main class="page-container dashboard-page">
+			<section class="welcome-row page-enter">
+				<div>
+					<p class="eyebrow"><span class="eyebrow-line"></span> YOUR FINANCIAL SNAPSHOT</p>
+					<h1>A little clarity<br class="mobile-break"> goes a long way.</h1>
+					<p class="welcome-copy">Every mindful choice adds up. Here's where your money is going.</p>
+				</div>
+				<a class="button button-primary" th:href="@{/expenses/new}">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+					<span>New expense</span>
+				</a>
+			</section>
+
+			<section class="summary-grid" aria-label="Expense summary">
+				<article class="summary-card total-card">
+					<div class="summary-topline">
+						<span class="summary-label">Total tracked</span>
+						<span class="summary-icon summary-icon-mint" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18m4-13.5c0-1.4-1.8-2.5-4-2.5s-4 1.1-4 2.5S9.8 12 12 12s4 1.1 4 2.5-1.8 2.5-4 2.5-4-1.1-4-2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+						</span>
+					</div>
+					<p class="summary-value"><span class="currency-symbol">$</span><span th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">0.00</span></p>
+					<p class="summary-footnote">Across all your recorded expenses</p>
+				</article>
+				<article class="summary-card count-card">
+					<div class="summary-topline">
+						<span class="summary-label">Entries logged</span>
+						<span class="summary-icon summary-icon-lavender" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none"><path d="M8 5h11v15H5V5h3Zm0 0V3h8v2M8 10h8m-8 4h8m-8 4h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</span>
+					</div>
+					<p class="summary-value" th:text="${expenseCount}">0</p>
+					<p class="summary-footnote">Small steps, clearly accounted for</p>
+				</article>
+				<article class="summary-card category-count-card">
+					<div class="summary-topline">
+						<span class="summary-label">Categories</span>
+						<span class="summary-icon summary-icon-peach" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11l9 9-7 7-9-9V5.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.1" fill="currentColor"/></svg>
+						</span>
+					</div>
+					<p class="summary-value" th:text="${#lists.size(categories)}">0</p>
+					<p class="summary-footnote">Different parts of your life</p>
+				</article>
+			</section>
+
+			<section class="content-grid">
+				<article class="panel category-panel">
+					<div class="panel-heading">
+						<div><p class="eyebrow">YOUR SPENDING</p><h2>By category</h2></div>
+						<span class="panel-caption" th:text="${#lists.size(categories)} + ' categories'">0 categories</span>
+					</div>
+					<div class="category-list" th:if="${!#lists.isEmpty(categories)}">
+						<div class="category-row" th:each="category : ${categories}">
+							<div class="category-row-top">
+								<span class="category-name">
+									<span class="category-bullet" aria-hidden="true"></span>
+									<span th:text="${category.name}">Food &amp; dining</span>
+								</span>
+								<span class="category-amount">$<span th:text="${#numbers.formatDecimal(category.amount, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+							</div>
+							<div class="progress-track" role="progressbar" th:attr="aria-label=${category.name + ' relative spending'},aria-valuenow=${category.percentage},aria-valuemin=0,aria-valuemax=100">
+								<span class="progress-fill" th:style="'--bar-width: ' + ${category.percentage} + '%'"></span>
+							</div>
+						</div>
+					</div>
+					<div class="empty-inline" th:if="${#lists.isEmpty(categories)}">
+						<span class="empty-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none"><path d="M4 19V9m5 10V5m6 14v-7m5 7V3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+						</span>
+						<div><strong>Your categories will show up here</strong><p>Add your first expense to see your spending take shape.</p></div>
+					</div>
+				</article>
+
+				<article class="panel recent-panel">
+					<div class="panel-heading">
+						<div><p class="eyebrow">THE LATEST</p><h2>Recent expenses</h2></div>
+						<a class="text-link" th:href="@{/expenses/new}">Add one <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="expense-list" th:if="${!#lists.isEmpty(expenses)}">
+						<a class="expense-row" th:each="expense, row : ${expenses}" th:href="@{/expenses/{id}(id=${expense.id})}" th:style="'--row-index: ' + ${row.index}">
+							<span class="expense-kind-icon" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1.2 11H6.2L5 8Zm3 0a4 4 0 0 1 8 0M9 12v3m6-3v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+							</span>
+							<span class="expense-row-copy"><strong th:text="${expense.title}">Market</strong><small><span th:text="${expense.category}">Food</span><span class="dot-separator">·</span><time th:text="${#temporals.format(expense.date, 'MMM d')}">Jan 12</time></small></span>
+							<span class="expense-row-amount">−$<span th:text="${#numbers.formatDecimal(expense.amount, 1, 'COMMA', 2, 'POINT')}">0.00</span></span>
+							<svg class="row-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</a>
+					</div>
+					<div class="empty-inline recent-empty" th:if="${#lists.isEmpty(expenses)}">
+						<span class="empty-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10v16H7zM10 8h4m-4 4h4m-4 4h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</span>
+						<div><strong>A fresh page</strong><p>Your expense history will appear here.</p></div>
+					</div>
+					<a class="button button-quiet" th:href="@{/expenses/new}" th:if="${#lists.isEmpty(expenses)}">Add your first expense <span aria-hidden="true">→</span></a>
+				</article>
+			</section>
+
+			<div class="toast-message" role="status" th:if="${successMessage}" th:text="${successMessage}"></div>
+		</main>
+		<div th:replace="~{fragments/layout :: siteFooter}"></div>
+	</div>
+</body>
+</html>
